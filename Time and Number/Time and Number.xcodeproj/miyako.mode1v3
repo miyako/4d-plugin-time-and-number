@@ -216,10 +216,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>D15AE85917A9111B0076DD2C</string>
+						<string>D1AB417618434EE500F603C0</string>
 						<key>history</key>
 						<array>
-							<string>D13C6E4E17A89ACF009B3D43</string>
+							<string>D134019F183DDD5E00F02065</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -256,10 +256,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>D15AE85A17A9111B0076DD2C</string>
+						<string>D1AB417718434EE500F603C0</string>
 						<key>history</key>
 						<array>
-							<string>D13C6E4F17A89ACF009B3D43</string>
+							<string>D13401A0183DDD5E00F02065</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -358,7 +358,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>20</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -409,7 +409,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D15AE85617A9111B0076DD2C</string>
+										<string>D1AB417318434EE500F603C0</string>
 										<key>history</key>
 										<array>
 											<string>D13C6CD117A86F46009B3D43</string>
@@ -417,7 +417,7 @@
 											<string>D13C6D2317A8724B009B3D43</string>
 											<string>D13C6D5F17A888BC009B3D43</string>
 											<string>D13C6DCC17A88F1E009B3D43</string>
-											<string>D13C6E4D17A89ACF009B3D43</string>
+											<string>D134019C183DDD5E00F02065</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -429,14 +429,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {580, 260}}</string>
+								<string>{{0, 0}, {580, 242}}</string>
 								<key>RubberWindowFrame</key>
 								<string>263 372 788 504 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>260pt</string>
+							<string>242pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -444,19 +444,19 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20506471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>詳細</string>
+								<string>Detail</string>
 							</dict>
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 265}, {580, 198}}</string>
+								<string>{{0, 247}, {580, 216}}</string>
 								<key>RubberWindowFrame</key>
 								<string>263 372 788 504 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>198pt</string>
+							<string>216pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -475,9 +475,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D15AE85717A9111B0076DD2C</string>
+				<string>D1AB417418434EE500F603C0</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>D15AE85817A9111B0076DD2C</string>
+				<string>D1AB417518434EE500F603C0</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -664,7 +664,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ビルド結果</string>
+								<string>Build Results</string>
 								<key>XCBuildResultsTrigger_Collapse</key>
 								<integer>1021</integer>
 								<key>XCBuildResultsTrigger_Open</key>
@@ -698,7 +698,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>D13C6CC217A86EA2009B3D43</string>
-				<string>D15AE85B17A9111B0076DD2C</string>
+				<string>D1AB417818434EE500F603C0</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
