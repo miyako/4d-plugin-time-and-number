@@ -3,6 +3,12 @@
 
 Methods to convert number to text and time across timezones. (an ICU wrapper)
 
+##Platform
+
+| carbon | cocoa | win32 | win64 |
+|:------:|:-----:|:---------:|:---------:|
+|🆗|🆗|🆗|🆗|
+
 ```
   //new constant RFC
 
