@@ -91,3 +91,33 @@ $e:=TIMEZONE Get region ($gmt;$region)
   //use TIME Get offset to get daylight saving offset as well
 $e:=TIMEZONE Get offset ($gmt;$offset)
 ```
+
+```
+C_REAL($number)
+C_TEXT($string)
+
+$number:=Random
+
+$error:=NUMBER Format ($number;$string)  //default.
+$error:=NUMBER Format ($number;$string;NUMBER Spellout)  //ex. nineteen thousand nine hundred forty-three 
+$error:=NUMBER Format ($number;$string;NUMBER Duration)  //ex. 5:32:23
+$error:=NUMBER Format ($number;$string;NUMBER Ordinal)  //ex. 19,943rd
+  //http://icu-project.org/apiref/icu4c/classicu_1_1RuleBasedNumberFormat.html
+
+$error:=NUMBER Format ($number;$string;NUMBER Spellout;"fr_FR")  //ex. vingt-deux-mille-sept-cent-quatorze
+
+$rule:="-x: minus >>;\n"+\
+"x.x: << point >>;\n"+\
+"zero; one; two; three; four; five; six;\n"+\
+"    seven; eight; nine;\n"+\
+"10: << >>;\n"+\
+"100: << >>>;\n"+\
+"1000: <<, >>>;\n"+\
+"1,000,000: <<, >>>;\n"+\
+"1,000,000,000: <<, >>>;\n"+\
+"1,000,000,000,000: <<, >>>;\n"+\
+"1,000,000,000,000,000: =#,##0=;\n";
+
+$error:=NUMBER Format ($number;$string;NUMBER Custom;"en_US";$rule)  //ex. seven, nine three one
+  //http://userguide.icu-project.org/formatparse/numbers
+```
