@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-* Copyright (C) 1997-2011, International Business Machines Corporation and others.
+* Copyright (C) 1997-2014, International Business Machines Corporation and others.
 * All Rights Reserved.
 ********************************************************************************
 *
@@ -36,10 +36,14 @@
 #include "unicode/unum.h" // UNumberFormatStyle
 #include "unicode/locid.h"
 #include "unicode/stringpiece.h"
+#include "unicode/curramt.h"
+#include "unicode/udisplaycontext.h"
 
 class NumberFormatTest;
 
 U_NAMESPACE_BEGIN
+
+class SharedNumberFormat;
 
 #if !UCONFIG_NO_SERVICE
 class NumberFormatFactory;
@@ -70,6 +74,9 @@ class StringEnumeration;
  *    cout << " Example 1: " << myString << endl;
  * \endcode
  * </pre>
+ * Note that there are additional factory methods within subclasses of
+ * NumberFormat.
+ * <P>
  * If you are formatting multiple numbers, it is more efficient to get
  * the format and use it multiple times so that the system doesn't
  * have to fetch the information about the local language and country
@@ -173,29 +180,44 @@ public:
      * support identification of all number format fields, not just those
      * pertaining to alignment.
      *
+     * These constants are provided for backwards compatibility only.
+     * Please use the C style constants defined in the header file unum.h.
+     *
      * @see FieldPosition
      * @stable ICU 2.0
      */
     enum EAlignmentFields {
-        kIntegerField,
-        kFractionField,
-        kDecimalSeparatorField,
-        kExponentSymbolField,
-        kExponentSignField,
-        kExponentField,
-        kGroupingSeparatorField,
-        kCurrencyField,
-        kPercentField,
-        kPermillField,
-        kSignField,
+        /** @stable ICU 2.0 */
+        kIntegerField = UNUM_INTEGER_FIELD,
+        /** @stable ICU 2.0 */
+        kFractionField = UNUM_FRACTION_FIELD,
+        /** @stable ICU 2.0 */
+        kDecimalSeparatorField = UNUM_DECIMAL_SEPARATOR_FIELD,
+        /** @stable ICU 2.0 */
+        kExponentSymbolField = UNUM_EXPONENT_SYMBOL_FIELD,
+        /** @stable ICU 2.0 */
+        kExponentSignField = UNUM_EXPONENT_SIGN_FIELD,
+        /** @stable ICU 2.0 */
+        kExponentField = UNUM_EXPONENT_FIELD,
+        /** @stable ICU 2.0 */
+        kGroupingSeparatorField = UNUM_GROUPING_SEPARATOR_FIELD,
+        /** @stable ICU 2.0 */
+        kCurrencyField = UNUM_CURRENCY_FIELD,
+        /** @stable ICU 2.0 */
+        kPercentField = UNUM_PERCENT_FIELD,
+        /** @stable ICU 2.0 */
+        kPermillField = UNUM_PERMILL_FIELD,
+        /** @stable ICU 2.0 */
+        kSignField = UNUM_SIGN_FIELD,
 
     /**
      * These constants are provided for backwards compatibility only.
-     * Please use the C++ style constants defined above.
-     * @stable ICU 2.0
+     * Please use the constants defined in the header file unum.h.
      */
-        INTEGER_FIELD        = kIntegerField,
-        FRACTION_FIELD        = kFractionField
+        /** @stable ICU 2.0 */
+        INTEGER_FIELD        = UNUM_INTEGER_FIELD,
+        /** @stable ICU 2.0 */
+        FRACTION_FIELD       = UNUM_FRACTION_FIELD
     };
 
     /**
@@ -343,6 +365,24 @@ public:
                                   UnicodeString& appendTo,
                                   FieldPosition& pos) const = 0;
     /**
+     * Format a double number. By default, the parent function simply
+     * calls the base class and does not return an error status.
+     * Therefore, the status may be ignored in some subclasses.
+     *
+     * @param number    The value to be formatted.
+     * @param appendTo  Output parameter to receive result.
+     *                  Result is appended to existing contents.
+     * @param pos       On input: an alignment field, if desired.
+     *                  On output: the offsets of the alignment field.
+     * @param status    error status
+     * @return          Reference to 'appendTo' parameter.
+     * @internal
+     */
+    virtual UnicodeString& format(double number,
+                                  UnicodeString& appendTo,
+                                  FieldPosition& pos,
+                                  UErrorCode &status) const;
+    /**
      * Format a double number. Subclasses must implement
      * this method.
      *
@@ -375,6 +415,24 @@ public:
     virtual UnicodeString& format(int32_t number,
                                   UnicodeString& appendTo,
                                   FieldPosition& pos) const = 0;
+
+    /**
+     * Format a long number. Concrete subclasses may override
+     * this function to provide status return.
+     *
+     * @param number    The value to be formatted.
+     * @param appendTo  Output parameter to receive result.
+     *                  Result is appended to existing contents.
+     * @param pos       On input: an alignment field, if desired.
+     *                  On output: the offsets of the alignment field.
+     * @param status the output status.
+     * @return          Reference to 'appendTo' parameter.
+     * @internal
+    */
+    virtual UnicodeString& format(int32_t number,
+                                  UnicodeString& appendTo,
+                                  FieldPosition& pos,
+                                  UErrorCode &status) const;
 
     /**
      * Format an int32 number. Subclasses must implement
@@ -410,6 +468,24 @@ public:
     virtual UnicodeString& format(int64_t number,
                                   UnicodeString& appendTo,
                                   FieldPosition& pos) const;
+
+    /**
+     * Format an int64 number. (Not abstract to retain compatibility
+     * with earlier releases, however subclasses should override this
+     * method as it just delegates to format(int32_t number...);
+     *
+     * @param number    The value to be formatted.
+     * @param appendTo  Output parameter to receive result.
+     *                  Result is appended to existing contents.
+     * @param pos       On input: an alignment field, if desired.
+     *                  On output: the offsets of the alignment field.
+     * @return          Reference to 'appendTo' parameter.
+     * @internal
+    */
+    virtual UnicodeString& format(int64_t number,
+                                  UnicodeString& appendTo,
+                                  FieldPosition& pos,
+                                  UErrorCode& status) const;
     /**
      * Format an int64 number. Subclasses must implement
      * this method.
@@ -496,20 +572,6 @@ public:
 
 public:
 
-    /**
-     * Redeclared Format method.
-     * @param obj       The object to be formatted.
-     * @param appendTo  Output parameter to receive result.
-     *                  Result is appended to existing contents.
-     * @param status    Output parameter set to a failure error code
-     *                  when a failure occurs.
-     * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
-     */
-    UnicodeString& format(const Formattable& obj,
-                          UnicodeString& appendTo,
-                          UErrorCode& status) const;
-
    /**
     * Return a long if possible (e.g. within range LONG_MAX,
     * LONG_MAX], and with no decimals), otherwise a double.  If
@@ -527,8 +589,6 @@ public:
     * @param parsePosition  The position to start parsing at on input.
     *                       On output, moved to after the last successfully
     *                       parse character. On parse failure, does not change.
-    * @return               A Formattable object of numeric type.  The caller
-    *                       owns this an must delete it.  NULL on failure.
     * @stable ICU 2.0
     */
     virtual void parse(const UnicodeString& text,
@@ -545,14 +605,12 @@ public:
      *                      If parse fails, return contents are undefined.
      * @param status        Output parameter set to a failure error code
      *                      when a failure occurs.
-     * @return              A Formattable object of numeric type.  The caller
-     *                      owns this an must delete it.  NULL on failure.
      * @see                 NumberFormat::isParseIntegerOnly
      * @stable ICU 2.0
      */
-    virtual void parse( const UnicodeString& text,
-                        Formattable& result,
-                        UErrorCode& status) const;
+    virtual void parse(const UnicodeString& text,
+                       Formattable& result,
+                       UErrorCode& status) const;
 
     /**
      * Parses text from the given string as a currency amount.  Unlike
@@ -564,18 +622,17 @@ public:
      * (U+00A4) in its prefix or suffix.
      *
      * @param text the string to parse
-     * @param result output parameter to receive result. This will have
-     * its currency set to the parsed ISO currency code.
-     * @param pos input-output position; on input, the position within
-     * text to match; must have 0 <= pos.getIndex() < text.length();
-     * on output, the position after the last matched character. If
-     * the parse fails, the position in unchanged upon output.
-     * @return a reference to result
-     * @internal
+     * @param pos  input-output position; on input, the position within text
+     *             to match; must have 0 <= pos.getIndex() < text.length();
+     *             on output, the position after the last matched character.
+     *             If the parse fails, the position in unchanged upon output.
+     * @return     if parse succeeds, a pointer to a newly-created CurrencyAmount
+     *             object (owned by the caller) containing information about
+     *             the parsed currency; if parse fails, this is NULL.
+     * @stable ICU 49
      */
-    virtual Formattable& parseCurrency(const UnicodeString& text,
-                                       Formattable& result,
-                                       ParsePosition& pos) const;
+    virtual CurrencyAmount* parseCurrency(const UnicodeString& text,
+                                          ParsePosition& pos) const;
 
     /**
      * Return true if this format will parse numbers as integers
@@ -604,7 +661,7 @@ public:
      *
      * @param enable <code>TRUE</code> if lenient parsing should be used,
      *               <code>FALSE</code> otherwise.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     virtual void setLenient(UBool enable);
 
@@ -614,7 +671,7 @@ public:
      * @return <code>TRUE</code> if lenient parsing is enabled,
      *         <code>FALSE</code> otherwise.
      * @see #setLenient
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     virtual UBool isLenient(void) const;
 
@@ -645,12 +702,35 @@ public:
      * @param style            the given style.
      * @param errorCode        Output param filled with success/failure status.
      * @return                 A new NumberFormat instance.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     static NumberFormat* U_EXPORT2 createInstance(const Locale& desiredLocale,
                                                   UNumberFormatStyle style,
                                                   UErrorCode& errorCode);
 
+#ifndef U_HIDE_INTERNAL_API
+
+    /**
+     * ICU use only.
+     * Creates NumberFormat instance without using the cache.
+     * @internal
+     */
+    static NumberFormat* internalCreateInstance(
+            const Locale& desiredLocale,
+            UNumberFormatStyle style,
+            UErrorCode& errorCode);
+
+    /**
+     * ICU use only.
+     * Returns handle to the shared, cached NumberFormat instance for given
+     * locale. On success, caller must call removeRef() on returned value
+     * once it is done with the shared instance.
+     * @internal
+     */
+    static const SharedNumberFormat* U_EXPORT2 createSharedInstance(
+            const Locale& inLocale, UNumberFormatStyle style, UErrorCode& status);
+
+#endif  /* U_HIDE_INTERNAL_API */
 
     /**
      * Returns a currency format for the current default locale.
@@ -704,6 +784,9 @@ public:
 #if !UCONFIG_NO_SERVICE
     /**
      * Register a new NumberFormatFactory.  The factory will be adopted.
+     * Because ICU may choose to cache NumberFormat objects internally,
+     * this must be called at application startup, prior to any calls to
+     * NumberFormat::createInstance to avoid undefined behavior.
      * @param toAdopt the NumberFormatFactory instance to be adopted
      * @param status the in/out status code, no special meanings are assigned
      * @return a registry key that can be used to unregister this factory
@@ -715,6 +798,9 @@ public:
      * Unregister a previously-registered NumberFormatFactory using the key returned from the
      * register call.  Key becomes invalid after a successful call and should not be used again.
      * The NumberFormatFactory corresponding to the key will be deleted.
+     * Because ICU may choose to cache NumberFormat objects internally,
+     * this should be called during application shutdown, after all calls to
+     * NumberFormat::createInstance to avoid undefined behavior.
      * @param key the registry key returned by a previous call to registerFactory
      * @param status the in/out status code, no special meanings are assigned
      * @return TRUE if the factory for the key was successfully unregistered
@@ -862,6 +948,31 @@ public:
      * @stable ICU 2.6
      */
     const UChar* getCurrency() const;
+	
+    /* Cannot use #ifndef U_HIDE_DRAFT_API for the following draft method since it is virtual */
+    /**
+     * Set a particular UDisplayContext value in the formatter, such as
+     * UDISPCTX_CAPITALIZATION_FOR_STANDALONE.
+     * @param value The UDisplayContext value to set.
+     * @param status Input/output status. If at entry this indicates a failure
+     *               status, the function will do nothing; otherwise this will be
+     *               updated with any new status from the function. 
+     * @draft ICU 53
+     */
+    virtual void setContext(UDisplayContext value, UErrorCode& status);
+
+    /* Cannot use #ifndef U_HIDE_DRAFT_API for the following draft method since it is virtual */
+    /**
+     * Get the formatter's UDisplayContext value for the specified UDisplayContextType,
+     * such as UDISPCTX_TYPE_CAPITALIZATION.
+     * @param type The UDisplayContextType whose value to return
+     * @param status Input/output status. If at entry this indicates a failure
+     *               status, the function will do nothing; otherwise this will be
+     *               updated with any new status from the function. 
+     * @return The UDisplayContextValue for the specified type.
+     * @draft ICU 53
+     */
+    virtual UDisplayContext getContext(UDisplayContextType type, UErrorCode& status) const;
 
 public:
 
@@ -918,6 +1029,19 @@ protected:
      */
     virtual void getEffectiveCurrency(UChar* result, UErrorCode& ec) const;
 
+#ifndef U_HIDE_INTERNAL_API
+    /**
+     * Creates the specified number format style of the desired locale.
+     * If mustBeDecimalFormat is TRUE, then the returned pointer is
+     * either a DecimalFormat or it is NULL.
+     * @internal
+     */
+    static NumberFormat* makeInstance(const Locale& desiredLocale,
+                                      UNumberFormatStyle style,
+                                      UBool mustBeDecimalFormat,
+                                      UErrorCode& errorCode);
+#endif  /* U_HIDE_INTERNAL_API */
+
 private:
 
     static UBool isStyleSupported(UNumberFormatStyle style);
@@ -933,16 +1057,24 @@ private:
                                       UNumberFormatStyle style,
                                       UErrorCode& errorCode);
 
-    UBool      fGroupingUsed;
+    UBool       fGroupingUsed;
     int32_t     fMaxIntegerDigits;
     int32_t     fMinIntegerDigits;
     int32_t     fMaxFractionDigits;
     int32_t     fMinFractionDigits;
+
+  protected:
+    static const int32_t gDefaultMaxIntegerDigits;
+    static const int32_t gDefaultMinIntegerDigits;
+ 
+  private:
     UBool      fParseIntegerOnly;
     UBool      fLenient; // TRUE => lenient parse is enabled
 
     // ISO currency code
     UChar      fCurrency[4];
+
+    UDisplayContext fCapitalizationContext;
 
     friend class ICUNumberFormatFactory; // access to makeInstance
     friend class ICUNumberFormatService;
@@ -1044,14 +1176,7 @@ NumberFormat::isParseIntegerOnly() const
 inline UBool
 NumberFormat::isLenient() const
 {
-	return fLenient;
-}
-
-inline UnicodeString&
-NumberFormat::format(const Formattable& obj,
-                     UnicodeString& appendTo,
-                     UErrorCode& status) const {
-    return Format::format(obj, appendTo, status);
+    return fLenient;
 }
 
 U_NAMESPACE_END

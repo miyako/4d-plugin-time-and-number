@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1996-2011, International Business Machines
+*   Copyright (C) 1996-2014, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -40,6 +40,11 @@
  * \file
  * \brief C++ API: Locale ID object.
  */
+
+U_NAMESPACE_BEGIN
+
+// Forward Declarations
+void U_CALLCONV locale_available_init(); /**< @internal */
 
 /**
  * A <code>Locale</code> object represents a specific geographical, political,
@@ -177,7 +182,6 @@
  * @stable ICU 2.0
  * @see ResourceBundle
  */
-U_NAMESPACE_BEGIN
 class U_COMMON_API Locale : public UObject {
 public:
     /** Useful constant for the Root locale. @stable ICU 4.4 */
@@ -321,6 +325,7 @@ public:
      */
     Locale *clone() const;
 
+#ifndef U_HIDE_SYSTEM_API
     /**
      * Common methods of getting the current default Locale. Used for the
      * presentation: menus, dialogs, etc. Generally set once when your applet or
@@ -352,6 +357,7 @@ public:
      */
     static void U_EXPORT2 setDefault(const Locale& newLocale,
                                      UErrorCode&   success);
+#endif  /* U_HIDE_SYSTEM_API */
 
     /**
      * Creates a locale which has had minimal canonicalization
@@ -415,7 +421,7 @@ public:
     inline const char * getName() const;
 
     /**
-     * Returns the programmatic name of the entire locale as getName would return,
+     * Returns the programmatic name of the entire locale as getName() would return,
      * but without keywords.
      * @return      A pointer to "name".
      * @see getName
@@ -435,7 +441,7 @@ public:
     StringEnumeration * createKeywords(UErrorCode &status) const;
 
     /**
-     * Get the value for a keyword.
+     * Gets the value for a keyword.
      *
      * @param keywordName name of the keyword for which we want the value. Case insensitive.
      * @param buffer The buffer to receive the keyword value.
@@ -448,7 +454,10 @@ public:
     int32_t getKeywordValue(const char* keywordName, char *buffer, int32_t bufferCapacity, UErrorCode &status) const;
 
     /**
-     * Set the value for a keyword.
+     * Sets or removes the value for a keyword.
+     *
+     * For removing all keywords, use getBaseName(),
+     * and construct a new Locale if it differs from getName().
      *
      * @param keywordName name of the keyword to be set. Case insensitive.
      * @param keywordValue value of the keyword to be set. If 0-length or
@@ -456,7 +465,7 @@ public:
      *  that keyword does not exist.
      * @param status Returns any error information while performing this operation.
      *
-     * @internal 
+     * @stable ICU 49
      */
     void setKeywordValue(const char* keywordName, const char* keywordValue, UErrorCode &status);
 
@@ -483,6 +492,23 @@ public:
      * @stable ICU 2.0
      */
     uint32_t        getLCID(void) const;
+
+#ifndef U_HIDE_DRAFT_API
+    /**
+     * Returns whether this locale's script is written right-to-left.
+     * If there is no script subtag, then the likely script is used, see uloc_addLikelySubtags().
+     * If no likely script is known, then FALSE is returned.
+     *
+     * A script is right-to-left according to the CLDR script metadata
+     * which corresponds to whether the script's letters have Bidi_Class=R or AL.
+     *
+     * Returns TRUE for "ar" and "en-Hebr", FALSE for "zh" and "fa-Cyrl".
+     *
+     * @return TRUE if the locale's script is written right-to-left
+     * @draft ICU 54
+     */
+    UBool isRightToLeft() const;
+#endif  /* U_HIDE_DRAFT_API */
 
     /**
      * Fills in "dispLang" with the name of this locale's language in a format suitable for
@@ -683,11 +709,13 @@ public:
     virtual UClassID getDynamicClassID() const;
 
 protected: /* only protected for testing purposes. DO NOT USE. */
+#ifndef U_HIDE_INTERNAL_API
     /**
      * Set this from a single POSIX style locale string.
      * @internal
      */
     void setFromPOSIXID(const char *posixID);
+#endif  /* U_HIDE_INTERNAL_API */
 
 private:
     /**
@@ -732,7 +760,12 @@ private:
      * A friend to allow the default locale to be set by either the C or C++ API.
      * @internal
      */
-    friend void locale_set_default_internal(const char *);
+    friend Locale *locale_set_default_internal(const char *, UErrorCode& status);
+
+    /**
+     * @internal
+     */
+    friend void U_CALLCONV locale_available_init();
 };
 
 inline UBool

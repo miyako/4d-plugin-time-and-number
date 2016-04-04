@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2010-2011, International Business Machines
+*   Copyright (C) 2010-2014, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  ucharstriebuilder.h
@@ -20,6 +20,11 @@
 #include "unicode/ucharstrie.h"
 #include "unicode/unistr.h"
 
+/**
+ * \file
+ * \brief C++ API: Builder for icu::UCharsTrie
+ */
+
 U_NAMESPACE_BEGIN
 
 class UCharsTrieElement;
@@ -28,20 +33,20 @@ class UCharsTrieElement;
  * Builder class for UCharsTrie.
  *
  * This class is not intended for public subclassing.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 class U_COMMON_API UCharsTrieBuilder : public StringTrieBuilder {
 public:
     /**
      * Constructs an empty builder.
      * @param errorCode Standard ICU error code.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UCharsTrieBuilder(UErrorCode &errorCode);
 
     /**
      * Destructor.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     virtual ~UCharsTrieBuilder();
 
@@ -57,13 +62,16 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return *this
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UCharsTrieBuilder &add(const UnicodeString &s, int32_t value, UErrorCode &errorCode);
 
     /**
      * Builds a UCharsTrie for the add()ed data.
      * Once built, no further data can be add()ed until clear() is called.
+     *
+     * A UCharsTrie cannot be empty. At least one (string, value) pair
+     * must have been add()ed.
      *
      * This method passes ownership of the builder's internal result array to the new trie object.
      * Another call to any build() variant will re-serialize the trie.
@@ -74,13 +82,16 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return A new UCharsTrie for the add()ed data.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UCharsTrie *build(UStringTrieBuildOption buildOption, UErrorCode &errorCode);
 
     /**
      * Builds a UCharsTrie for the add()ed data and UChar-serializes it.
      * Once built, no further data can be add()ed until clear() is called.
+     *
+     * A UCharsTrie cannot be empty. At least one (string, value) pair
+     * must have been add()ed.
      *
      * Multiple calls to buildUnicodeString() set the UnicodeStrings to the
      * builder's same UChar array, without rebuilding.
@@ -97,7 +108,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return result
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UnicodeString &buildUnicodeString(UStringTrieBuildOption buildOption, UnicodeString &result,
                                       UErrorCode &errorCode);
@@ -106,7 +117,7 @@ public:
      * Removes all (string, value) pairs.
      * New data can then be add()ed and a new trie can be built.
      * @return *this
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UCharsTrieBuilder &clear() {
         strings.remove();

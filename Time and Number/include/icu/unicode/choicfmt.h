@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-*   Copyright (C) 1997-2011, International Business Machines
+*   Copyright (C) 1997-2013, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 ********************************************************************************
 *
@@ -30,6 +30,7 @@
  */
 
 #if !UCONFIG_NO_FORMATTING
+#ifndef U_HIDE_DEPRECATED_API
 
 #include "unicode/fieldpos.h"
 #include "unicode/format.h"
@@ -164,6 +165,8 @@ class MessageFormat;
  * <p><em>User subclasses are not supported.</em> While clients may write
  * subclasses, such code will not necessarily work and will not be
  * guaranteed to work stably from release to release.
+ *
+ * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
  */
 class U_I18N_API ChoiceFormat: public NumberFormat {
 public:
@@ -173,7 +176,7 @@ public:
      * @param pattern   Pattern used to construct object.
      * @param status    Output param to receive success code.  If the
      *                  pattern cannot be parsed, set to failure code.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     ChoiceFormat(const UnicodeString& pattern,
                  UErrorCode& status);
@@ -189,7 +192,7 @@ public:
      * @param limits    Array of limit values.
      * @param formats   Array of formats.
      * @param count     Size of 'limits' and 'formats' arrays.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     ChoiceFormat(const double* limits,
                  const UnicodeString* formats,
@@ -207,7 +210,7 @@ public:
      * If TRUE, then the limit number belongs to the previous range it.
      * @param formats Array of formats
      * @param count Size of 'limits', 'closures', and 'formats' arrays
-     * @stable ICU 2.4
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     ChoiceFormat(const double* limits,
                  const UBool* closures,
@@ -218,7 +221,7 @@ public:
      * Copy constructor.
      *
      * @param that   ChoiceFormat object to be copied from
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     ChoiceFormat(const ChoiceFormat& that);
 
@@ -226,13 +229,13 @@ public:
      * Assignment operator.
      *
      * @param that   ChoiceFormat object to be copied
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     const ChoiceFormat& operator=(const ChoiceFormat& that);
 
     /**
      * Destructor.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual ~ChoiceFormat();
 
@@ -241,7 +244,7 @@ public:
      * result and must delete it when done.
      *
      * @return a copy of this object
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual Format* clone(void) const;
 
@@ -251,7 +254,7 @@ public:
      *
      * @param other    ChoiceFormat object to be compared
      * @return         true if other is the same as this.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UBool operator==(const Format& other) const;
 
@@ -261,7 +264,7 @@ public:
      * @param status    Output param set to success/failure code on
      *                  exit. If the pattern is invalid, this will be
      *                  set to a failure result.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual void applyPattern(const UnicodeString& pattern,
                               UErrorCode& status);
@@ -274,7 +277,7 @@ public:
      * @param status     Output param set to success/failure code on
      *                   exit. If the pattern is invalid, this will be
      *                   set to a failure result.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual void applyPattern(const UnicodeString& pattern,
                              UParseError& parseError,
@@ -285,7 +288,7 @@ public:
      * @param pattern    Output param which will receive the pattern
      *                   Previous contents are deleted.
      * @return    A reference to 'pattern'
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UnicodeString& toPattern(UnicodeString &pattern) const;
 
@@ -300,7 +303,7 @@ public:
      *                          &lt;= X &lt; limit[i+1].
      * @param formatsToCopy     The format strings you want to use for each limit.
      * @param count             The size of the above arrays.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual void setChoices(const double* limitsToCopy,
                             const UnicodeString* formatsToCopy,
@@ -314,7 +317,7 @@ public:
      * @param closures Array of limit booleans
      * @param formats Array of format string
      * @param count The size of the above arrays
-     * @stable ICU 2.4
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual void setChoices(const double* limits,
                             const UBool* closures,
@@ -363,7 +366,7 @@ public:
      * @param pos       On input: an alignment field, if desired.
      *                  On output: the offsets of the alignment field.
      * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UnicodeString& format(double number,
                                   UnicodeString& appendTo,
@@ -377,7 +380,7 @@ public:
      * @param pos       On input: an alignment field, if desired.
      *                  On output: the offsets of the alignment field.
      * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UnicodeString& format(int32_t number,
                                   UnicodeString& appendTo,
@@ -392,7 +395,7 @@ public:
      * @param pos       On input: an alignment field, if desired.
      *                  On output: the offsets of the alignment field.
      * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.8
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UnicodeString& format(int64_t number,
                                   UnicodeString& appendTo,
@@ -410,74 +413,15 @@ public:
      * @param success   Output param set to success/failure code on
      *                  exit.
      * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UnicodeString& format(const Formattable* objs,
                                   int32_t cnt,
                                   UnicodeString& appendTo,
                                   FieldPosition& pos,
                                   UErrorCode& success) const;
-    /**
-     * Formats an object using this object's choices.
-     *
-     *
-     * @param obj       The object to be formatted.
-     * @param appendTo  Output parameter to receive result.
-     *                  Result is appended to existing contents.
-     * @param pos       On input: an alignment field, if desired.
-     *                  On output: the offsets of the alignment field.
-     * @param status    Output param set to success/failure code on
-     *                  exit.
-     * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
-     */
-    virtual UnicodeString& format(const Formattable& obj,
-                                  UnicodeString& appendTo,
-                                  FieldPosition& pos,
-                                  UErrorCode& status) const;
 
-    /**
-     * Redeclared NumberFormat method.
-     *
-     * @param obj       The object to be formatted.
-     * @param appendTo  Output parameter to receive result.
-     *                  Result is appended to existing contents.
-     * @param status    Output param set to success/failure code on
-     *                  exit.
-     * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
-     */
-    UnicodeString& format(const Formattable& obj,
-                          UnicodeString& appendTo,
-                          UErrorCode& status) const;
-
-    /**
-     * Redeclared NumberFormat method.
-     * Formats a double number. These methods call the NumberFormat
-     * pure virtual format() methods with the default FieldPosition.
-     *
-     * @param number    The value to be formatted.
-     * @param appendTo  Output parameter to receive result.
-     *                  Result is appended to existing contents.
-     * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
-     */
-    UnicodeString& format(  double number,
-                            UnicodeString& appendTo) const;
-
-    /**
-     * Redeclared NumberFormat method.
-     * Formats an int32_t number. These methods call the NumberFormat
-     * pure virtual format() methods with the default FieldPosition.
-     *
-     * @param number    The value to be formatted.
-     * @param appendTo  Output parameter to receive result.
-     *                  Result is appended to existing contents.
-     * @return          Reference to 'appendTo' parameter.
-     * @stable ICU 2.0
-     */
-    UnicodeString& format(  int32_t number,
-                            UnicodeString& appendTo) const;
+   using NumberFormat::parse;
 
    /**
     * Looks for the longest match of any message string on the input text and,
@@ -491,27 +435,11 @@ public:
     * @param parsePosition  The position to start parsing at on input.
     *                       On output, moved to after the last successfully
     *                       parse character. On parse failure, does not change.
-    * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
     */
     virtual void parse(const UnicodeString& text,
                        Formattable& result,
                        ParsePosition& parsePosition) const;
-
-    /**
-     * Looks for the longest match of any message string on the input text and,
-     * if there is a match, sets the result object to the corresponding range's number.
-     *
-     * If no string matches, then the UErrorCode is set to U_INVALID_FORMAT_ERROR.
-     *
-     * @param text           The text to be parsed.
-     * @param result         Formattable to be set to the parse result.
-     *                       If parse fails, return contents are undefined.
-     * @param status         Output param with the formatted string.
-     * @stable ICU 2.0
-     */
-    virtual void parse(const UnicodeString& text,
-                       Formattable& result,
-                       UErrorCode& status) const;
 
     /**
      * Returns a unique class ID POLYMORPHICALLY. Part of ICU's "poor man's RTTI".
@@ -519,7 +447,7 @@ public:
      * @return          The class ID for this object. All objects of a
      *                  given class have the same class ID.  Objects of
      *                  other classes have different class IDs.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     virtual UClassID getDynamicClassID(void) const;
 
@@ -532,7 +460,7 @@ public:
      * .           Derived::getStaticClassID()) ...
      * </pre>
      * @return          The class ID for all objects of this class.
-     * @stable ICU 2.0
+     * @deprecated ICU 49 Use MessageFormat instead, with plural and select arguments.
      */
     static UClassID U_EXPORT2 getStaticClassID(void);
 
@@ -556,7 +484,6 @@ private:
      *                     of error if an error is encountered.
      * @param status       Output param to receive success code.  If the
      *                     pattern cannot be parsed, set to failure code.
-     * @stable ICU 2.0
      */
     ChoiceFormat(const UnicodeString& newPattern,
                  UParseError& parseError,
@@ -657,29 +584,11 @@ private:
     // int32_t         fCount;
 };
 
-inline UnicodeString&
-ChoiceFormat::format(const Formattable& obj,
-                     UnicodeString& appendTo,
-                     UErrorCode& status) const {
-    // Don't use Format:: - use immediate base class only,
-    // in case immediate base modifies behavior later.
-    return NumberFormat::format(obj, appendTo, status);
-}
 
-inline UnicodeString&
-ChoiceFormat::format(double number,
-                     UnicodeString& appendTo) const {
-    return NumberFormat::format(number, appendTo);
-}
-
-inline UnicodeString&
-ChoiceFormat::format(int32_t number,
-                     UnicodeString& appendTo) const {
-    return NumberFormat::format(number, appendTo);
-}
 U_NAMESPACE_END
 
+#endif  // U_HIDE_DEPRECATED_API
 #endif /* #if !UCONFIG_NO_FORMATTING */
 
-#endif // _CHOICFMT
+#endif // CHOICFMT_H
 //eof

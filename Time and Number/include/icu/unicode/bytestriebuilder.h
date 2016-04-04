@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2010-2011, International Business Machines
+*   Copyright (C) 2010-2014, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  bytestriebuilder.h
@@ -11,6 +11,11 @@
 *   created on: 2010sep25
 *   created by: Markus W. Scherer
 */
+
+/**
+ * \file
+ * \brief C++ API: Builder for icu::BytesTrie
+ */
 
 #ifndef __BYTESTRIEBUILDER_H__
 #define __BYTESTRIEBUILDER_H__
@@ -29,20 +34,20 @@ class CharString;
  * Builder class for BytesTrie.
  *
  * This class is not intended for public subclassing.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 class U_COMMON_API BytesTrieBuilder : public StringTrieBuilder {
 public:
     /**
      * Constructs an empty builder.
      * @param errorCode Standard ICU error code.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrieBuilder(UErrorCode &errorCode);
 
     /**
      * Destructor.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     virtual ~BytesTrieBuilder();
 
@@ -58,13 +63,16 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return *this
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrieBuilder &add(const StringPiece &s, int32_t value, UErrorCode &errorCode);
 
     /**
      * Builds a BytesTrie for the add()ed data.
      * Once built, no further data can be add()ed until clear() is called.
+     *
+     * A BytesTrie cannot be empty. At least one (byte sequence, value) pair
+     * must have been add()ed.
      *
      * This method passes ownership of the builder's internal result array to the new trie object.
      * Another call to any build() variant will re-serialize the trie.
@@ -75,13 +83,16 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return A new BytesTrie for the add()ed data.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrie *build(UStringTrieBuildOption buildOption, UErrorCode &errorCode);
 
     /**
      * Builds a BytesTrie for the add()ed data and byte-serializes it.
      * Once built, no further data can be add()ed until clear() is called.
+     *
+     * A BytesTrie cannot be empty. At least one (byte sequence, value) pair
+     * must have been add()ed.
      *
      * Multiple calls to buildStringPiece() return StringPieces referring to the
      * builder's same byte array, without rebuilding.
@@ -96,7 +107,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return A StringPiece which refers to the byte-serialized BytesTrie for the add()ed data.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     StringPiece buildStringPiece(UStringTrieBuildOption buildOption, UErrorCode &errorCode);
 
@@ -104,7 +115,7 @@ public:
      * Removes all (byte sequence, value) pairs.
      * New data can then be add()ed and a new trie can be built.
      * @return *this
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrieBuilder &clear();
 
