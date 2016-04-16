@@ -9,6 +9,8 @@ Methods to convert number to text and time across timezones. (an ICU wrapper)
 |:------:|:-----:|:---------:|:---------:|
 |🆗|🆗|🆗|🆗|
 
+* New command ``TIMEZONE GET LIST`` returns 620 timezones.
+
 ```
   //new constant RFC
 
