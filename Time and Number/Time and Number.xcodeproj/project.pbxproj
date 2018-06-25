@@ -16,6 +16,10 @@
 		8D01CCC80486CAD60068D4B7 /* 4D Plugin_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32BAE0B30371A71500C91783 /* 4D Plugin_Prefix.pch */; };
 		8D01CCCA0486CAD60068D4B7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		D120937F13534DCC00A72CAA /* 4DPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = D120937E13534DCC00A72CAA /* 4DPlugin.h */; };
+		D120B7C120E125300082B403 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D120B7B820E125300082B403 /* libiconv.a */; };
+		D120B7C220E125300082B403 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D120B7B920E125300082B403 /* libicudata.a */; };
+		D120B7C320E125300082B403 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D120B7BA20E125300082B403 /* libicui18n.a */; };
+		D120B7C920E125300082B403 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D120B7C020E125300082B403 /* libicuuc.a */; };
 		D130064F12F02D9700702C0E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D130064E12F02D9700702C0E /* Cocoa.framework */; };
 		D13116A91A03ACB700DE1322 /* 4DPluginAPI.c in Sources */ = {isa = PBXBuildFile; fileRef = D13116A81A03ACB700DE1322 /* 4DPluginAPI.c */; };
 		D13116AC1A03B10800DE1322 /* C_LONGINT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D13116AA1A03B10800DE1322 /* C_LONGINT.cpp */; };
@@ -53,9 +57,6 @@
 		D13116F51A03C7AF00DE1322 /* ARRAY_DATE.h in Headers */ = {isa = PBXBuildFile; fileRef = D13116F31A03C7AF00DE1322 /* ARRAY_DATE.h */; };
 		D134D4AC1A030BA0008D14EF /* manifest.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = D134D4A91A030B06008D14EF /* manifest.json */; };
 		D175D9CD1A02E8DD0006B569 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D175D9CC1A02E8DD0006B569 /* CoreGraphics.framework */; };
-		D185A0351CB2C1A90022FCB9 /* libicudata.54.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D185A0321CB2C1A90022FCB9 /* libicudata.54.1.dylib */; };
-		D185A0361CB2C1A90022FCB9 /* libicui18n.54.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D185A0331CB2C1A90022FCB9 /* libicui18n.54.1.dylib */; };
-		D185A0371CB2C1A90022FCB9 /* libicuuc.54.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D185A0341CB2C1A90022FCB9 /* libicuuc.54.1.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +84,15 @@
 		32BAE0B30371A71500C91783 /* 4D Plugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "4D Plugin_Prefix.pch"; sourceTree = "<group>"; };
 		8D01CCD10486CAD60068D4B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D120937E13534DCC00A72CAA /* 4DPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 4DPlugin.h; sourceTree = "<group>"; };
+		D120B7B820E125300082B403 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiconv.a; sourceTree = "<group>"; };
+		D120B7B920E125300082B403 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
+		D120B7BA20E125300082B403 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
+		D120B7BB20E125300082B403 /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuio.a; sourceTree = "<group>"; };
+		D120B7BC20E125300082B403 /* libicule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicule.a; sourceTree = "<group>"; };
+		D120B7BD20E125300082B403 /* libiculx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiculx.a; sourceTree = "<group>"; };
+		D120B7BE20E125300082B403 /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicutest.a; sourceTree = "<group>"; };
+		D120B7BF20E125300082B403 /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicutu.a; sourceTree = "<group>"; };
+		D120B7C020E125300082B403 /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuuc.a; sourceTree = "<group>"; };
 		D130064E12F02D9700702C0E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D13116A81A03ACB700DE1322 /* 4DPluginAPI.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = 4DPluginAPI.c; sourceTree = "<group>"; };
 		D13116AA1A03B10800DE1322 /* C_LONGINT.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = C_LONGINT.cpp; path = Classes/C_LONGINT.cpp; sourceTree = "<group>"; };
@@ -131,9 +141,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D185A0351CB2C1A90022FCB9 /* libicudata.54.1.dylib in Frameworks */,
-				D185A0361CB2C1A90022FCB9 /* libicui18n.54.1.dylib in Frameworks */,
-				D185A0371CB2C1A90022FCB9 /* libicuuc.54.1.dylib in Frameworks */,
+				D120B7C120E125300082B403 /* libiconv.a in Frameworks */,
+				D120B7C920E125300082B403 /* libicuuc.a in Frameworks */,
+				D120B7C220E125300082B403 /* libicudata.a in Frameworks */,
+				D120B7C320E125300082B403 /* libicui18n.a in Frameworks */,
 				D13116C71A03B5B600DE1322 /* AppKit.framework in Frameworks */,
 				D175D9CD1A02E8DD0006B569 /* CoreGraphics.framework in Frameworks */,
 				D130064F12F02D9700702C0E /* Cocoa.framework in Frameworks */,
@@ -146,6 +157,7 @@
 		089C166AFE841209C02AAC07 /* Time and Number */ = {
 			isa = PBXGroup;
 			children = (
+				D120B7B720E125300082B403 /* a */,
 				D108BD7A1A03D1E6001F1B90 /* Manifest */,
 				08FB77ADFE841716C02AAC07 /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
@@ -217,6 +229,22 @@
 				D14D10DD1A03A8A5008B3411 /* constants.xlf */,
 			);
 			name = Manifest;
+			sourceTree = "<group>";
+		};
+		D120B7B720E125300082B403 /* a */ = {
+			isa = PBXGroup;
+			children = (
+				D120B7B820E125300082B403 /* libiconv.a */,
+				D120B7B920E125300082B403 /* libicudata.a */,
+				D120B7BA20E125300082B403 /* libicui18n.a */,
+				D120B7BB20E125300082B403 /* libicuio.a */,
+				D120B7BC20E125300082B403 /* libicule.a */,
+				D120B7BD20E125300082B403 /* libiculx.a */,
+				D120B7BE20E125300082B403 /* libicutest.a */,
+				D120B7BF20E125300082B403 /* libicutu.a */,
+				D120B7C020E125300082B403 /* libicuuc.a */,
+			);
+			path = a;
 			sourceTree = "<group>";
 		};
 		D13116D01A03BBA100DE1322 /* C */ = {
@@ -337,7 +365,13 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
+				TargetAttributes = {
+					8D01CCC60486CAD60068D4B7 = {
+						DevelopmentTeam = Y69CWUC25B;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 42D60B430A9DDBC8002ABB42 /* Build configuration list for PBXProject "Time and Number" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -424,10 +458,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
 				DEPLOYMENT_LOCATION = NO;
+				DEVELOPMENT_TEAM = Y69CWUC25B;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -442,11 +478,15 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/a",
+				);
 				LIBRARY_STYLE = Bundle;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4D.4DPlugin.time-and-number";
 				PRODUCT_NAME = "Time and Number";
 				SECTORDER_FLAGS = "";
 				USER_HEADER_SEARCH_PATHS = "include/**";
@@ -464,9 +504,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEPLOYMENT_LOCATION = NO;
+				DEVELOPMENT_TEAM = Y69CWUC25B;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -479,11 +521,15 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/a",
+				);
 				LIBRARY_STYLE = Bundle;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4D.4DPlugin.time-and-number";
 				PRODUCT_NAME = "Time and Number";
 				SECTORDER_FLAGS = "";
 				USER_HEADER_SEARCH_PATHS = "include/**";
@@ -501,8 +547,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = NO;
+				DEVELOPMENT_TEAM = Y69CWUC25B;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -514,11 +562,15 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/a",
+				);
 				LIBRARY_STYLE = Bundle;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4D.4DPlugin.time-and-number";
 				PRODUCT_NAME = "Time and Number";
 				SECTORDER_FLAGS = "";
 				USER_HEADER_SEARCH_PATHS = "include/**";
@@ -535,10 +587,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OBJROOT = "$(SRCROOT)/build";
 				SDKROOT = macosx10.8;
@@ -550,10 +619,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OBJROOT = "$(SRCROOT)/build";
 				SDKROOT = macosx10.8;
@@ -565,9 +651,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx10.8;
 				SYMROOT = "$(SRCROOT)/$(PRODUCT_NAME).4dbase/Plugins";

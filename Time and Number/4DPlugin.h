@@ -8,11 +8,15 @@
  #
  # --------------------------------------------------------------------------------*/
 
-#include "timezone.h"
-#include "smpdtfmt.h"
-#include "rbnf.h"
-#include "locid.h"
-#include "unistr.h"
+#include "unicode/unistr.h"
+#include "unicode/ucnv.h"
+#include "unicode/utrans.h"
+#include "unicode/ucsdet.h"
+#include "unicode/unorm2.h"
+#include "unicode/timezone.h"
+#include "unicode/smpdtfmt.h"
+#include "unicode/rbnf.h"
+#include "unicode/locid.h"
 
 #define ISO_DATE_FORMAT_SPRINT "%4d.%2d.%2d.%2d.%2d.%2d.%3d"
 #define ISO_DATE_FORMAT_STRING "yyyy.MM.dd.HH.mm.ss.SSS"

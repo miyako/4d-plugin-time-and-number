@@ -12,6 +12,8 @@
 #include "4DPluginAPI.h"
 #include "4DPlugin.h"
 
+using namespace icu;
+
 namespace DT
 {
 	bool setUnicodeString(C_TEXT &param, UnicodeString &str){
