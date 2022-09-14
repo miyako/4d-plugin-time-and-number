@@ -90,7 +90,7 @@ $e:=TIMEZONE Get region ($gmt;$region)
 $e:=TIMEZONE Get offset ($gmt;$offset)
 ```
 
-```
+```4d
 C_REAL($number)
 C_TEXT($string)
 
