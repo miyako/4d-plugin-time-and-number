@@ -10,6 +10,7 @@
 #define __C_REAL_H__ 1
 
 #include "4DPluginAPI.h"
+#include "C_TYPES.h"
 
 #ifdef __cplusplus
 extern "C" {
