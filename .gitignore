@@ -1,1 +1,4 @@
 Time and Number/build/*
+build/*
+test/userPreferences.*
+test/Project/DerivedData/*

@@ -25,7 +25,7 @@ namespace DT
         std::vector<UChar> buf(len);
         str.extract((UChar *)&buf[0], len, status);
         
-        if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+        if(U_SUCCESS(status)){
             param.setUTF16String((const PA_Unichar *)&buf[0], len);
             success = true;
         }
@@ -41,8 +41,8 @@ namespace DT
         
         if(setUnicodeString(t, str)){
             
-            CUTF8String u;
             t.copyUTF8String(&ustr);
+            success = true;
             
         }
         
@@ -58,28 +58,35 @@ namespace DT
         DateIn.getYearMonthDay(&y, &m, &d);
         uint32_t seconds = TimeIn.getSeconds();
         
-        hh = seconds / 3600;
+        //clamp to the ranges the fixed-width ISO_DATE_FORMAT_SPRINT format assumes
+        //(y: 4 digits, hh/mm/ss: 2 digits) so a malformed/huge input can never
+        //make sprintf produce more characters than the buffer was sized for
+        if(y > 9999) y = 9999;
+        hh = (seconds / 3600) % 100;
         mm = (seconds % 3600) / 60;
         ss = (seconds % 3600) % 60;
         
         uint16_t sss = MillisecondIn.getIntValue() % 1000;
         
-        std::vector<char> buf(ISO_DATE_FORMAT_STRING_SIZE);
-        sprintf((char *)&buf[0], ISO_DATE_FORMAT_SPRINT, y, m, d, hh, mm, ss, sss);
+        //size the buffer generously and let snprintf enforce the limit itself,
+        //rather than trusting the format string's nominal width
+        std::vector<char> buf(64, 0);
+        int written = snprintf((char *)&buf[0], buf.size(), ISO_DATE_FORMAT_SPRINT, y, m, d, hh, mm, ss, sss);
+        size_t len = (written > 0 && (size_t)written < buf.size()) ? (size_t)written : (buf.size() - 1);
         
         C_TEXT iso_date_string;
-        iso_date_string.setUTF8String((const uint8_t *)&buf[0], ISO_DATE_FORMAT_STRING_SIZE);
-        const UnicodeString dateString = UnicodeString((const UChar *)iso_date_string.getUTF16StringPtr());
+        iso_date_string.setUTF8String((const uint8_t *)&buf[0], (uint32_t)len);
+        const UnicodeString dateString = UnicodeString((const UChar *)iso_date_string.getUTF16StringPtr(), iso_date_string.getUTF16Length());
         
         C_TEXT iso_date_format;
         iso_date_format.setUTF8String((const uint8_t *)ISO_DATE_FORMAT_STRING, strlen(ISO_DATE_FORMAT_STRING));
-        const UnicodeString fmtstr = UnicodeString((const UChar *)iso_date_format.getUTF16StringPtr());
+        const UnicodeString fmtstr = UnicodeString((const UChar *)iso_date_format.getUTF16StringPtr(), iso_date_format.getUTF16Length());
         
         SimpleDateFormat fmt(fmtstr, status);
         
-        if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+        if(U_SUCCESS(status)){
             
-            UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr());
+            UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr(), ZoneIn.getUTF16Length());
             
             TimeZone *zone;
             
@@ -112,7 +119,7 @@ namespace DT
         SimpleDateFormat fmt(formatString, status);
         
         //the format string is valid
-        if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING  || status == U_USING_FALLBACK_WARNING){
+        if(U_SUCCESS(status)){
             
             TimeZone *zone;
             
@@ -135,7 +142,7 @@ namespace DT
             //export the date string
             str = fmt.format(date, str, status);
             
-            if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING  || status == U_USING_FALLBACK_WARNING){
+            if(U_SUCCESS(status)){
                 setUnicodeString(StringOut, str);
                 status = U_ZERO_ERROR;
             }
@@ -152,10 +159,10 @@ namespace DT
         
         C_TEXT iso_date_format;
         iso_date_format.setUTF8String((const uint8_t *)ISO_DATE_FORMAT_STRING, ISO_DATE_FORMAT_STRING_SIZE);
-        const UnicodeString fmtstr = UnicodeString((const UChar *)iso_date_format.getUTF16StringPtr());
+        const UnicodeString fmtstr = UnicodeString((const UChar *)iso_date_format.getUTF16StringPtr(), iso_date_format.getUTF16Length());
         SimpleDateFormat isoFmt(fmtstr, status);
         
-        if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+        if(U_SUCCESS(status)){
             
             TimeZone *zone;
             
@@ -256,7 +263,14 @@ void PluginMain(PA_long32 selector, PA_PluginParameters params) {
 	}
 	catch(...)
 	{
-
+        //an exception partway through a handler can leave *pResult and the
+        //output parameters in whatever partial state they had before the throw;
+        //make the failure explicit rather than letting the host read stale/
+        //uninitialized data as if it were a successful result
+        sLONG_PTR *pResult = (sLONG_PTR *)params->fResult;
+        if(pResult){
+            *pResult = (sLONG_PTR)U_INTERNAL_PROGRAM_ERROR;
+        }
 	}
 }
 
@@ -278,7 +292,7 @@ void TIME_Get_offset(PA_PluginParameters params) {
     
     UErrorCode status = U_ZERO_ERROR;
     
-    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr());
+    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr(), ZoneIn.getUTF16Length());
     TimeZone *zone = TimeZone::createTimeZone(zoneId);
     
     if(zone){
@@ -325,8 +339,8 @@ void TIME_Date_to_text(PA_PluginParameters params) {
     
     UErrorCode status = U_ZERO_ERROR;
     
-    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr());
-    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr());
+    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr(), FormatIn.getUTF16Length());
+    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr(), ZoneIn.getUTF16Length());
     
     UDate date = DT::timeGetDate(DateIn, TimeIn, MillisecondIn, ZoneIn);
     
@@ -356,12 +370,12 @@ void TIME_Date_from_text(PA_PluginParameters params) {
     
     UErrorCode status = U_ZERO_ERROR;
     
-    UnicodeString dateString = UnicodeString((const UChar *)StringIn.getUTF16StringPtr());
-    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr());
+    UnicodeString dateString = UnicodeString((const UChar *)StringIn.getUTF16StringPtr(), StringIn.getUTF16Length());
+    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr(), FormatIn.getUTF16Length());
     
     SimpleDateFormat fmt(formatString, status);
     
-    if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+    if(U_SUCCESS(status)){
         
         UDate date = fmt.parse(dateString, status);
         
@@ -398,18 +412,18 @@ void TIME_Absolute_from_text(PA_PluginParameters params) {
     
     UErrorCode status = U_ZERO_ERROR;
     
-    UnicodeString dateString = UnicodeString((const UChar *)StringIn.getUTF16StringPtr());
-    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr());
+    UnicodeString dateString = UnicodeString((const UChar *)StringIn.getUTF16StringPtr(), StringIn.getUTF16Length());
+    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr(), FormatIn.getUTF16Length());
     
     SimpleDateFormat fmt(formatString, status);
     
     //the format string is valid
-    if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+    if(U_SUCCESS(status)){
         
         UDate date = fmt.parse(dateString, status);
         
         //the date string is valid
-        if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+        if(U_SUCCESS(status)){
             AbsoluteOut.setDoubleValue(date);
             status = U_ZERO_ERROR;
         }
@@ -439,8 +453,8 @@ void TIME_Absolute_to_text(PA_PluginParameters params) {
     UErrorCode status = U_ZERO_ERROR;
     
     UDate date = AbsoluteIn.getDoubleValue();
-    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr());
-    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr());
+    UnicodeString formatString = UnicodeString((const UChar *)FormatIn.getUTF16StringPtr(), FormatIn.getUTF16Length());
+    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr(), ZoneIn.getUTF16Length());
     
     status = DT::dateToText(date, formatString, zoneId, StringOut);
     
@@ -468,7 +482,7 @@ void TIME_Date_from_absolute(PA_PluginParameters params) {
     UErrorCode status = U_ZERO_ERROR;
     
     UDate date = AbsoluteIn.getDoubleValue();
-    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr());
+    UnicodeString zoneId = UnicodeString((const UChar *)ZoneIn.getUTF16StringPtr(), ZoneIn.getUTF16Length());
     
     status = DT::dateToDate(date, zoneId, DateOut, TimeOut, MillisecondOut);
     
@@ -520,11 +534,11 @@ void TIMEZONE_Get_region(PA_PluginParameters params) {
     
     std::vector<char> buf(MAX_REGION_LENGTH);
     
-    UnicodeString zoneId = UnicodeString((const UChar *)Param1.getUTF16StringPtr());
+    UnicodeString zoneId = UnicodeString((const UChar *)Param1.getUTF16StringPtr(), Param1.getUTF16Length());
     
     int32_t len = TimeZone::getRegion(zoneId, &buf[0], MAX_REGION_LENGTH, status);
     
-    if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+    if(U_SUCCESS(status)){
         Param2.setUTF8String((const uint8_t *)&buf[0], len);
         status = U_ZERO_ERROR;
     }
@@ -570,8 +584,7 @@ void TIMEZONE_Get_offset(PA_PluginParameters params) {
     
     UErrorCode status = U_ZERO_ERROR;
     
-    Param1.fromParamAtIndex(pParams, 1);
-    UnicodeString zoneId = UnicodeString((const UChar *)Param1.getUTF16StringPtr());
+    UnicodeString zoneId = UnicodeString((const UChar *)Param1.getUTF16StringPtr(), Param1.getUTF16Length());
     TimeZone *zone = TimeZone::createTimeZone(zoneId);
     
     if(zone){
@@ -603,8 +616,7 @@ void TIMEZONE_Get_display_name(PA_PluginParameters params) {
     
     UErrorCode status = U_ZERO_ERROR;
     
-    Param1.fromParamAtIndex(pParams, 1);
-    UnicodeString zoneId = UnicodeString((const UChar *)Param1.getUTF16StringPtr());
+    UnicodeString zoneId = UnicodeString((const UChar *)Param1.getUTF16StringPtr(), Param1.getUTF16Length());
     TimeZone *zone = TimeZone::createTimeZone(zoneId);
     
     if(zone){
@@ -684,18 +696,18 @@ void NUMBER_Format(PA_PluginParameters params) {
         
     }
     
-    if(status == U_ZERO_ERROR){
+    if(U_SUCCESS(status)){
         
         int mode = Param3.getIntValue();
         
         if(mode == NUMBER_FORMAT_CUSTOM){
             
-            if(Param5.getUTF16Length()){
+            if(Param5.getUTF16Length() && Param5.getUTF16Length() <= MAX_CUSTOM_RULE_LENGTH){
                 
-                UnicodeString rules = UnicodeString((const UChar *)Param5.getUTF16StringPtr());
+                UnicodeString rules = UnicodeString((const UChar *)Param5.getUTF16StringPtr(), Param5.getUTF16Length());
                 RuleBasedNumberFormat fmt = RuleBasedNumberFormat(rules, locale, perror, status);
                 
-                if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+                if(U_SUCCESS(status)){
                     
                     UnicodeString numberString;
                     fmt.format(Param1.getDoubleValue(), numberString);
@@ -719,7 +731,7 @@ void NUMBER_Format(PA_PluginParameters params) {
                 {
                     RuleBasedNumberFormat fmt = RuleBasedNumberFormat((URBNFRuleSetTag)mode, locale, status);
                     
-                    if(status == U_ZERO_ERROR || status == U_USING_DEFAULT_WARNING || status == U_USING_FALLBACK_WARNING){
+                    if(U_SUCCESS(status)){
                         
                         UnicodeString numberString;
                         fmt.format(Param1.getDoubleValue(), numberString);
@@ -761,7 +773,7 @@ void TIMEZONE_GET_LIST(PA_PluginParameters params) {
     UErrorCode status = U_ZERO_ERROR;
     const UnicodeString *zoneId = timeZoneIds->snext(status);
     
-    while (zoneId != NULL && status == U_ZERO_ERROR)
+    while (zoneId != NULL && U_SUCCESS(status))
     {
         std::string zoneIdString;
         zoneId->toUTF8String(zoneIdString);

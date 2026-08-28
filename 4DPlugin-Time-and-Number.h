@@ -35,6 +35,10 @@
 #define ISO_DATE_FORMAT_STRING "yyyy.MM.dd.HH.mm.ss.SSS"
 #define ISO_DATE_FORMAT_STRING_SIZE 24
 #define MAX_REGION_LENGTH 4
+//guards against pathologically large/slow-to-parse custom RuleBasedNumberFormat
+//rule strings supplied by the caller (NUMBER_FORMAT_CUSTOM) - well beyond what any
+//legitimate rule set needs, but bounds worst-case parse time/memory
+#define MAX_CUSTOM_RULE_LENGTH 65536
 
 #define NUMBER_FORMAT_SPELLOUT 0
 #define NUMBER_FORMAT_ORDINAL 1
