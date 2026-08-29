@@ -92,7 +92,20 @@ jobs:
             exit 1
           }
           Write-Host "Found at: $($found.FullName)"
-          Copy-Item $found.FullName "$canonicalDir/$product.4DX" -Force
+
+          $destination = Join-Path $canonicalDir "$product.4DX"
+          $sourceResolved = (Resolve-Path $found.FullName).Path
+          $destResolved = (Resolve-Path $destination -ErrorAction SilentlyContinue).Path
+
+          if ($destResolved -and ($sourceResolved -ieq $destResolved)) {
+            # Windows is case-insensitive: MSBuild's OutDir (lowercase, per
+            # the .vcxproj) and this step's canonical path already point at
+            # the identical physical file. Copy-Item correctly refuses to
+            # "overwrite" a file with itself - there's nothing left to do.
+            Write-Host "Already at canonical location (case-insensitive match) - skipping copy."
+          } else {
+            Copy-Item $found.FullName $destination -Force
+          }
           Get-ChildItem $canonicalDir
 
       - name: upload windows binaries
