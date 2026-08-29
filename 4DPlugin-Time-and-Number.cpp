@@ -58,18 +58,17 @@ namespace DT
         DateIn.getYearMonthDay(&y, &m, &d);
         uint32_t seconds = TimeIn.getSeconds();
         
-        //clamp to the ranges the fixed-width ISO_DATE_FORMAT_SPRINT format assumes
-        //(y: 4 digits, hh/mm/ss: 2 digits) so a malformed/huge input can never
-        //make sprintf produce more characters than the buffer was sized for
-        if(y > 9999) y = 9999;
-        hh = (seconds / 3600) % 100;
+        hh = seconds / 3600;
         mm = (seconds % 3600) / 60;
         ss = (seconds % 3600) % 60;
         
         uint16_t sss = MillisecondIn.getIntValue() % 1000;
         
-        //size the buffer generously and let snprintf enforce the limit itself,
-        //rather than trusting the format string's nominal width
+        //4D's Date/Time types support years and durations well beyond 4/2 digits,
+        //so this buffer is sized generously and snprintf enforces the real limit -
+        //no clamping of y/hh here, since that would silently corrupt legitimate
+        //values; the '.'-delimited fields in ISO_DATE_FORMAT_STRING still parse
+        //correctly at any digit width
         std::vector<char> buf(64, 0);
         int written = snprintf((char *)&buf[0], buf.size(), ISO_DATE_FORMAT_SPRINT, y, m, d, hh, mm, ss, sss);
         size_t len = (written > 0 && (size_t)written < buf.size()) ? (size_t)written : (buf.size() - 1);
@@ -265,11 +264,16 @@ void PluginMain(PA_long32 selector, PA_PluginParameters params) {
 	{
         //an exception partway through a handler can leave *pResult and the
         //output parameters in whatever partial state they had before the throw;
-        //make the failure explicit rather than letting the host read stale/
-        //uninitialized data as if it were a successful result
+        //report a definite error using this file's own established return
+        //convention (C_LONGINT::setReturn), rather than writing through the raw
+        //pointer directly - this file never does the latter anywhere else, and
+        //C_LONGINT's internals aren't available here to confirm the two are
+        //equivalent
         sLONG_PTR *pResult = (sLONG_PTR *)params->fResult;
         if(pResult){
-            *pResult = (sLONG_PTR)U_INTERNAL_PROGRAM_ERROR;
+            C_LONGINT returnValue;
+            returnValue.setIntValue(U_INTERNAL_PROGRAM_ERROR);
+            returnValue.setReturn(pResult);
         }
 	}
 }
