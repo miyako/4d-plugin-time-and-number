@@ -25,6 +25,13 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
+    <ClCompile Include="4D Plugin API\Classes\C_BLOB.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\C_DATE.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\C_LONGINT.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\C_REAL.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\C_TEXT.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\C_TIME.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\ARRAY_TEXT.cpp" />
     <ClCompile Include="4DPlugin-Time-and-Number.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,7 +192,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);support;include;include\windows;4D Plugin API\Classes;4D Plugin API;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);support;include\windows;include;4D Plugin API\Classes;4D Plugin API;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NONDLL;BGDWIN32;WIN64;WIN32;NOMINMAX;_WINDOWS;NDEBUG;_USRDLL;MY4DPLUGIN_EXPORTS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -203,7 +210,7 @@
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>icuuc.lib;icuin.lib;icudt.lib;icuio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)lib\windows64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
