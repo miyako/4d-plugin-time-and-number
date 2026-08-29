@@ -27,7 +27,7 @@ permissions:
 env:
   # ---- only this needs editing per-project ----
   PRODUCT_NAME: Time and Number
-  MACOS_DEPLOYMENT_TARGET: '10.13'
+  MACOS_DEPLOYMENT_TARGET: '11.0'
   # static base for this project (intentional)
   BASE_DIR: test
   # ---------------------------------------------
