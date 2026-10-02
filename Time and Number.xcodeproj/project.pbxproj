@@ -37,6 +37,7 @@
 		D13DF17D28D17FA300C49E5C /* ARRAY_TEXT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D13DF17B28D17FA300C49E5C /* ARRAY_TEXT.cpp */; };
 		D13DF18028D180BA00C49E5C /* C_REAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D13DF17E28D180BA00C49E5C /* C_REAL.cpp */; };
 		D13DF18128D180BA00C49E5C /* C_REAL.h in Headers */ = {isa = PBXBuildFile; fileRef = D13DF17F28D180BA00C49E5C /* C_REAL.h */; };
+		F423144FB0A166E20154FBF5 /* constants.xlf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D14D10DD1A03A8A5008B3411 /* constants.xlf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D134D4AC1A030BA0008D14EF /* manifest.json in CopyFiles */,
+				F423144FB0A166E20154FBF5 /* constants.xlf in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
